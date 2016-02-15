@@ -90,7 +90,9 @@ function homepage() {
 	echo '<h1>Hacky Repository Manager</h1>';
 	echo '<a href = "pub">Repositories</a>';
 	echo '<h3>POSTing/Uploading</h3>';
-	echo 'Make a HTTP POST request to upload.php this location with a file.';
+	echo 'Make a HTTP POST request to upload.php this location with a file.<br /><br />';
+	echo 'post_max_size: ' . ini_get('post_max_size') . '<br />';
+	echo 'upload_max_filesize: ' . ini_get('upload_max_filesize') . '<br />';
 }
 
 ?>

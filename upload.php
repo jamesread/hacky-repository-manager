@@ -1,6 +1,6 @@
 <?php
 
-require_once 'functions.php';
+require_once 'includes/common.php';
 
 try {
 	if (count($_FILES) > 0) {

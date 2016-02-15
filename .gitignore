@@ -1,2 +1,4 @@
 pub
 .log
+
+/vendor/
