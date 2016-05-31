@@ -1,8 +1,7 @@
 {
     "name": "jamesread/hacky-repository-manager",
     "require": {
-        "jwread/lib-allure": "^1.0",
-		"smarty/smarty": "^3.1"
+        "jwread/lib-allure": "^1.0"
     },
     "authors": [
         {

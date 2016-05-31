@@ -1,0 +1,27 @@
+body {
+	font-family: sans-serif;
+}
+
+tr:hover {
+	background-color: beige;
+}
+
+td {
+	padding: .5em;
+}
+
+th {
+	text-align: left;
+}
+
+label {
+	display: inline-block;
+	min-width: 10em;
+	text-align: right;
+	background-color: #dde3e7;
+	margin-right: .5em;
+}
+
+li {
+	margin-bottom: 2em;
+}

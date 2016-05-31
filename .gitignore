@@ -1,4 +1,5 @@
 pub
+*.lock
 .log
-
+includes/config.php
 /vendor/

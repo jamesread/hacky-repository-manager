@@ -4,12 +4,16 @@ require_once 'includes/common.php';
 
 try {
 	if (count($_FILES) > 0) {
+		logger('Uploading file to hackyrepositorymanager.');
+
 		$file = current($_FILES);
 		checkUploadedFileProblems($file);
 
 		$origin = $file['name'];
-		$destin = getTargetDir($origin) . $file['name'];
-//		$destin = '/pub';
+
+		$repo = getRepository($origin);
+
+		$destin = $repo->getBaseDir() . $file['name'];
 
 		logger("Writing $origin to $destin");
 
@@ -19,19 +23,19 @@ try {
 			throw new Exception("Could not move uploaded file");
 		}
 
-		@unlink(getTargetDir($origin) . '/latest');
-		symlink($file['name'], getTargetDir($origin) . '/latest');
+		writePackageMetadata($file['name'], $repo);
 
-		doPostActions(getTargetDir($origin), $file['name']);
+		@unlink($repo->getBaseDir() . '/latest');
+		symlink($file['name'], $repo->getBaseDir() . '/latest');
 
-		logger("done");
+		doPostActions($repo->getBaseDir(), $file['name']);
+
+		logger('Package ' . $file['name'] . ' uploaded to repo: ' . $repo->getName());
 	} else {
 		logger("No files provided to upload");
 	}
 } catch (Exception $e) {
 	logger($e);
 }
-
-
 
 ?>
