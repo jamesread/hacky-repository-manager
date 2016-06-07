@@ -10,14 +10,14 @@ require_once 'includes/widgets/header.php';
 <h3>Latest versions</h3>
 <?php
 
-$sql = 'SELECT r.id, r.name, p.uploaded, p.filename FROM repositories r LEFT JOIN packages p ON p.repo = r.id GROUP BY r.id';
+$sql = 'SELECT r.id, r.name, max(p.uploaded) as uploaded, p.filename FROM repositories r LEFT JOIN packages p ON p.repo = r.id GROUP BY r.id';
 $stmt = stmt($sql);
 $stmt->execute();
 
 echo '<table>';
-echo '<tr><th>repo</th><th>updated / package</th></tr>';
+echo '<tr><th>repo</th><th>updated</th><th>package</th></tr>';
 foreach ($stmt->fetchAll() as $repo) {
-	echo '<tr><td><a href = "pub/' . $repo['name'] . '">' . $repo['name'] . '</a></td><td><a href = "pub/' . $repo['name'] . '/' . $repo['filename'] . '">' . $repo['uploaded'] . '</a> ' . $repo['filename'] . '</td></tr>';
+	echo '<tr><td><a href = "pub/' . $repo['name'] . '">' . $repo['name'] . '</a></td><td><a href = "pub/' . $repo['name'] . '/' . $repo['filename'] . '">' . $repo['uploaded'] . '</a></td><td>' . $repo['filename'] . '</td></tr>';
 }
 echo '</table>';
 
