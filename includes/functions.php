@@ -2,8 +2,6 @@
 
 require_once 'libAllure/util/shortcuts.php';
 
-$baseUrl = 'http://ci.teratan.net/repositories/pub/';
-
 errorHandler()->beGreedy();
 
 function writePackageMetadata($filename, $repo) {
@@ -30,9 +28,11 @@ class Repo {
 	}
 
 	public function fromDatabase($repo) {
+		global $CFG_REPO_ROOT;
+
 		$this->name = $repo['name'];
 
-		$root = 'pub/';
+		$root = $CFG_REPO_ROOT;
 		$prefix = $repo['name'];
 
 		$ret = $root . $prefix;
@@ -102,21 +102,52 @@ function getRepositoryByName($name) {
 	}
 }
 
-function getRepository() {
-	if (isset($_SERVER['HTTP_JOB_NAME'])) {
-		// Jenkins
-		foreach (getRoutes() as $route) {
-			if ($route->type == 'jenkins_job' && $route->source == $_SERVER['HTTP_JOB_NAME']) {
-				return getRepositoryByName($route['destination']);
-			}
+function ruleEval($source, $route) {
+		switch ($route->operator) {
+			case '=':
+				return $source == $route->source;
+			case '~': // contains
+				$fragments = explode('|', $source);
+
+				foreach (explode('|', $route->source) as $fragment) {
+					$noMatch = stripos($source, $fragment) === false;
+					echo '- ' . $source . ' ' . $fragment . ' = ' . !$noMatch . "\n";
+
+					if ($noMatch) {
+						return false;
+					}
+				}
+
+				return true;
+			default: 
+				return false;
+				
+		}
+}
+
+function getRepository($filename) {
+	foreach (getRoutes() as $route) {
+		$source = null;
+
+		switch ($route->type) {
+			case 'jenkins':
+				if (isset($_SERVER['HTTP_JOB_NAME'])) {
+					$source = $_SERVER['HTTP_JOB_NAME'];
+				}
+
+				break;
+			case 'filename':
+				$source = $filename;
+				break;
+			default:
+				continue;
 		}
 
-		return getRepositoryByName($_SERVER['HTTP_JOB_NAME']);
-	} else {
-		foreach (getRoutes() as $route) {
-			if ($route->type == 'filename') {
-
-			}
+		if (ruleEval($source, $route)) {
+			echo "Matched: $route->line\n";
+			return getRepositoryByName($route->destination);
+		} else {
+			echo 'Rule does not match: ' . $route->line . "\n";
 		}
 	}
 	
@@ -136,7 +167,7 @@ function checkUploadedFileProblems($file) {
 }
 
 function updateRpmRepoYumConf($dir) {
-	global $baseUrl;
+	global $CFG_REPO_BASE;
 	$name = basename($dir);
 
 	$yumConf = '';
@@ -145,7 +176,7 @@ function updateRpmRepoYumConf($dir) {
 	$yumConf .= 'metadata_expire=0' . "\n";
 	$yumConf .= 'enabled=1' . "\n";
 	$yumConf .= 'gpgcheck=0' . "\n";
-	$yumConf .= 'baseurl=' . $baseUrl . $name . "\n";
+	$yumConf .= 'baseurl=' . $CFG_REPO_BASE . $name . "\n";
 
 	file_put_contents($dir . '' . $name . '.repo', $yumConf);
 }
@@ -205,17 +236,30 @@ function getRoutes() {
 
 	foreach (explode("\n", getSetting('routes')) as $routeLine) {
 		$matches = null;
-		preg_match_all('/((?<criterion>[\w]+\:[\w]+?)[ ])*?->(?<destination>.+)/ig', $routeLine, $matches, PREG_SET_ORDER);
+		preg_match_all('/(?<type>[\w-_]+) ?(?<operator>[=~]) ?(?<source>[\w-_\.\|]+)[ ]*?->(?<destination>.+)/i', $routeLine, $matches, PREG_SET_ORDER);
 
-		$route = new Route();
-		$route->parsed = $matches;
-		$route->line = $routeLine;
+		foreach ($matches as $match) {
+			$route = new Route();
+			$route->parsed = $match;
+			$route->line = $routeLine;
 
-		if (isset($matches['destination'])) {
-			$route->destination = $matches['destination'][0];
+			if (isset($match['destination'])) {
+				$route->destination = trim($match['destination']);
+			}
+
+			$route->operator = $match['operator'];
+
+			if (isset($match['type'])) {
+				$route->type = $match['type'];
+			}
+
+			if (isset($match['source'])) {
+				$route->source = $match['source'];
+			}
+
+
+			$ret[] = $route;
 		}
-
-		$ret[] = $route;
 	}
 
 	return $ret;
@@ -224,6 +268,7 @@ function getRoutes() {
 class Route {
 	public $type;
 	public $source;
+	public $operator;
 	public $destination;
 	public $parsed;
 	public $line;

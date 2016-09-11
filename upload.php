@@ -4,7 +4,7 @@ require_once 'includes/common.php';
 
 try {
 	if (count($_FILES) > 0) {
-		logger('Uploading file to hackyrepositorymanager.');
+		logger('Uploading file to hackyrepositorymanager: ' . current($_FILES)['name']);
 
 		$file = current($_FILES);
 		checkUploadedFileProblems($file);

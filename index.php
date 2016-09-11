@@ -17,7 +17,7 @@ $stmt->execute();
 echo '<table>';
 echo '<tr><th>repo</th><th>updated</th><th>package</th></tr>';
 foreach ($stmt->fetchAll() as $repo) {
-	echo '<tr><td><a href = "pub/' . $repo['name'] . '">' . $repo['name'] . '</a></td><td><a href = "pub/' . $repo['name'] . '/' . $repo['filename'] . '">' . $repo['uploaded'] . '</a></td><td>' . $repo['filename'] . '</td></tr>';
+	echo '<tr><td><a href = "' . $CFG_REPO_BASE . '/' . $repo['name'] . '">' . $repo['name'] . '</a></td><td><a href = "'. $CFG_REPO_BASE .'/' . $repo['name'] . '/' . $repo['filename'] . '">' . $repo['uploaded'] . '</a></td><td>' . $repo['filename'] . '</td></tr>';
 }
 echo '</table>';
 

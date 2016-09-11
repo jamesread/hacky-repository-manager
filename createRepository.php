@@ -24,5 +24,6 @@ class FormCreateRepository extends libAllure\Form {
 
 $handler = new \libAllure\FormHandler('FormCreateRepository');
 $handler->handle();
+$handler->setRedirect('index.php');
 
 ?>
