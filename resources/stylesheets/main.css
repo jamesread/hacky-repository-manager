@@ -25,3 +25,7 @@ label {
 li {
 	margin-bottom: 2em;
 }
+
+a[target="_new"] {
+	color: royalblue;
+}

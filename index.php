@@ -14,12 +14,9 @@ $sql = 'SELECT r.id, r.name, max(p.uploaded) as uploaded, p.filename FROM reposi
 $stmt = stmt($sql);
 $stmt->execute();
 
-echo '<table>';
-echo '<tr><th>repo</th><th>updated</th><th>package</th></tr>';
-foreach ($stmt->fetchAll() as $repo) {
-	echo '<tr><td><a href = "' . $CFG_REPO_BASE . '/' . $repo['name'] . '">' . $repo['name'] . '</a></td><td><a href = "'. $CFG_REPO_BASE .'/' . $repo['name'] . '/' . $repo['filename'] . '">' . $repo['uploaded'] . '</a></td><td>' . $repo['filename'] . '</td></tr>';
-}
-echo '</table>';
+$tpl->assign('CFG_REPO_BASE', $CFG_REPO_BASE);
+$tpl->assign('repos', $stmt->fetchAll());
+$tpl->display('listRepos.tpl');
 
 ?>
 

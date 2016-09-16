@@ -32,10 +32,9 @@ class Repo {
 
 		$this->name = $repo['name'];
 
-		$root = $CFG_REPO_ROOT;
 		$prefix = $repo['name'];
 
-		$ret = $root . $prefix;
+		$ret = $CFG_REPO_ROOT . $prefix;
 
 		if (!is_dir($ret)) {
 			logger("making dirs:" . $ret);
@@ -51,6 +50,7 @@ class Repo {
 		$this->id = $repo['id'];
 	}
 
+
 	public function getBaseDir() {
 		return $this->baseDir . '/';
 	}
@@ -61,6 +61,32 @@ class Repo {
 
 	public function getName() {
 		return $this->name;
+	}
+
+	public function delete() {
+		$this->rmdir($this->getBaseDir());
+
+		$sql = 'DELETE FROM repositories WHERE id = :id ';
+		$stmt = stmt($sql);
+		$stmt->bindValue(':id', $this->id);
+		$stmt->execute();
+	}
+
+	private function rmdir($dir) {
+		$results = array_diff(scandir($dir), array('.', '..'));
+
+		foreach ($results as $file) {
+			$path = $dir . DIRECTORY_SEPARATOR . $file;
+
+			if (is_dir($path)) {
+				$this->rmdir($path);
+			} else {
+				unlink($path);
+			}
+		}
+
+		return rmdir($dir);
+		
 	}
 }
 
@@ -125,7 +151,7 @@ function ruleEval($source, $route) {
 		}
 }
 
-function getRepository($filename) {
+function getRepositoryByPackageFilename($filename) {
 	foreach (getRoutes() as $route) {
 		$source = null;
 

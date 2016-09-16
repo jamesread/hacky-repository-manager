@@ -11,7 +11,12 @@ try {
 
 		$origin = $file['name'];
 
-		$repo = getRepository($origin);
+		try {
+			$repo = getRepositoryByPackageFilename($origin);
+		} catch (Exception $e) {
+			$repo = getRepositoryByName('default');
+		}
+
 
 		$destin = $repo->getBaseDir() . $file['name'];
 
