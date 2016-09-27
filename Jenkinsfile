@@ -36,7 +36,7 @@ node {
 	checkout scm
 
 	stage "Compile"
-	sh "makePackage.sh"
+	sh "./makePackage.sh"
 
 	stash includes:"packages/*.zip", name: "binaries"
 }
