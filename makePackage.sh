@@ -19,5 +19,5 @@ cp -r .hrm.rpmmacro $DESTDIR/
 
 cd packages
 
-zip -r hrm.zip hrm-$VERSION/*
+zip -r hrm.zip hrm-$VERSION/** hrm-$VERSION/.hrm.rpmmacro
 
