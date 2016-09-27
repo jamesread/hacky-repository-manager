@@ -1,4 +1,4 @@
-%include ../SPECS/.hrm.rpmmacro
+%include SPECS/.hrm.rpmmacro
 
 Name:		hrm
 Version:	%{tag}
