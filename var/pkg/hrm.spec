@@ -1,3 +1,5 @@
+%include ../SPECS/.hrm.rpmmacro
+
 Name:		hrm
 Version:	%{tag}
 Release:	1%{?dist}
