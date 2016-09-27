@@ -4,7 +4,6 @@ Name:		hrm
 Version:	%{version_formatted_short}
 Release:	1%{?dist}
 Summary:	Hacky Repository Manager
-Arch: noarch
 BuildArch: noarch
 
 Group:		System/Tools
