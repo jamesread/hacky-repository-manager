@@ -1,7 +1,7 @@
 %include SPECS/.hrm.rpmmacro
 
 Name:		hrm
-Version:	%{tag}
+Version:	%{version_formatted_short}
 Release:	1%{?dist}
 Summary:	Hacky Repository Manager
 
