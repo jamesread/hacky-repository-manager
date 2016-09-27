@@ -28,7 +28,7 @@ mkdir -p %{buildroot}/usr/share/hrm/
 cp src/*.php %{buildroot}/usr/share/hrm/
 
 mkdir -p %{buildroot}/etc/httpd/conf.d/
-cp var/hrm.conf
+cp var/hrm.conf %{buildroot}/etc/httpd/conf.d/hrm.conf
 
 %files
 /usr/share/hrm/*
