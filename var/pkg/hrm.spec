@@ -10,7 +10,7 @@ License:	GPLv2
 URL:		http://github.com/jamesread/hacky-repository-manager
 Source0:	hrm.zip
 
-BuildRequires:	
+BuildRequires:	php
 Requires:	php
 
 %description
