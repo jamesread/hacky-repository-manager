@@ -1,4 +1,4 @@
 #!/bin/sh
 
 VERSION=`buildid -n`
-zip packages/hrm-`buildid -k tag`.zip *.php
+zip -r packages/hrm-`buildid -k tag`.zip src/ README.md var/
