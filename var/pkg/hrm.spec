@@ -2,7 +2,7 @@
 
 Name:		hrm
 Version:	%{version_formatted_short}
-Release:	1%{?dist}
+Release:	%{timestamp}.%{?dist}
 Summary:	Hacky Repository Manager
 BuildArch: noarch
 
