@@ -3,3 +3,5 @@ pub
 .log
 includes/config.php
 /vendor/
+packages
+.buildid
