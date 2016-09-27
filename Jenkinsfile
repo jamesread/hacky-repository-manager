@@ -19,7 +19,7 @@ def buildRpm(dist) {
     sh "find ${env.WORKSPACE}"                                                     
                                                                                    
     sh 'mkdir -p SPECS SOURCES'                                                    
-    sh "cp build/distributions/*.zip SOURCES/hrm.zip"                                  
+    sh "cp packages/*.zip SOURCES/hrm.zip"                                  
                                                                                    
     sh 'unzip -jo SOURCES/hrm.zip "hrm-*/var/pkg/hrm.spec" "hrm-*/.hrm.rpmmacro" -d SPECS/'
     sh "find ${env.WORKSPACE}"                                                     
