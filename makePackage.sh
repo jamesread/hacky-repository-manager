@@ -4,4 +4,12 @@ mkdir -p packages
 
 buildid -n 
 VERSION=`buildid -k tag`
-tar --transform "s,^,/hrm-$VERSION/," -cf packages/hrm.tar src/*
+
+DESTDIR=packages/hrm-$VERSION/
+
+mkdir -p $DESTDIR/src
+
+cp src/* $DESTDIR/src
+
+cd packages
+zip -r hrm.zip hrm-$VERSION/*

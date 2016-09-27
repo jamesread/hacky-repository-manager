@@ -15,7 +15,7 @@ Requires:	php
 Hacky Repository Manager
 
 %prep
-%setup -q -n hrm-%{tag}.zip
+%setup -q -n hrm-%{tag}
 
 
 %build
