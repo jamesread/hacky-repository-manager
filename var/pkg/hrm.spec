@@ -28,6 +28,3 @@ cp src/*.php %{buildroot}/usr/share/hrm/
 
 %files
 /usr/share/hrm/*
-
-%changelog
-* Initial Version
