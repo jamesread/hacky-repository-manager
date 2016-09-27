@@ -12,7 +12,7 @@ URL:		http://github.com/jamesread/hacky-repository-manager
 Source0:	hrm.zip
 
 BuildRequires:	php
-Requires:	php
+Requires:	php httpd
 
 %description
 Hacky Repository Manager
@@ -27,5 +27,9 @@ Hacky Repository Manager
 mkdir -p %{buildroot}/usr/share/hrm/
 cp src/*.php %{buildroot}/usr/share/hrm/
 
+mkdir -p %{buildroot}/etc/httpd/conf.d/
+cp var/hrm.conf
+
 %files
 /usr/share/hrm/*
+/etc/httpd/conf.d/hrm.conf
