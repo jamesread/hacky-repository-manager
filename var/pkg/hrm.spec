@@ -30,6 +30,9 @@ cp -r src/* %{buildroot}/usr/share/hrm/
 mkdir -p %{buildroot}/etc/httpd/conf.d/
 cp var/hrm.conf %{buildroot}/etc/httpd/conf.d/hrm.conf
 
+mkdir -p %{buildroot}/etc/hrm/
+
 %files
 /usr/share/hrm/*
 /etc/httpd/conf.d/hrm.conf
+/etc/hrm/
