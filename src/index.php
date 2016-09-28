@@ -23,4 +23,6 @@ $tpl->display('listRepos.tpl');
 <h3>Config</h3>
 <p>post_max_size: <?php echo ini_get('post_max_size'); ?></p>
 <p>upload_max_filesize: <?php echo ini_get('upload_max_filesize'); ?></p>
+<p>CFG_REPO_BASE: <?php echo $CFG_REPO_BASE; ?></p>
+<p>CFG_REPO_ROOT: <?php echo $CFG_REPO_ROOT; ?></p>
 

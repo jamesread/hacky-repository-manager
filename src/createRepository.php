@@ -13,7 +13,12 @@ class FormCreateRepository extends libAllure\Form {
 
 	public function process() {
 		global $CFG_REPO_ROOT;
-		mkdir($CFG_REPO_ROOT . DIRECTORY_SEPARATOR . $this->getElementValue('name'));
+
+		$dir = $CFG_REPO_ROOT . DIRECTORY_SEPARATOR . $this->getElementValue('name');
+
+		logger("Trying to create: $dir");
+
+		mkdir($dir);
 
 		$sql = 'INSERT INTO repositories (name) VALUES (:name)';
 		$stmt = stmt($sql);
