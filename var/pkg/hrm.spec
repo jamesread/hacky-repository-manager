@@ -32,6 +32,9 @@ cp var/hrm.conf %{buildroot}/etc/httpd/conf.d/hrm.conf
 
 mkdir -p %{buildroot}/etc/hrm/
 
+mkdir -p %{buildroot}/usr/share/doc/hrm/
+cp var/schema.sql %{buildroot}/usr/share/doc/hrm/
+
 %files
 /usr/share/hrm/*
 /etc/httpd/conf.d/hrm.conf
