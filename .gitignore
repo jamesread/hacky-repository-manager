@@ -6,3 +6,4 @@ includes/config.php
 packages
 .buildid
 .hrm.rpmmacro
+src/vendor/

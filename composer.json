@@ -3,6 +3,9 @@
     "require": {
         "jwread/lib-allure": "^1.0"
     },
+	"config": {
+		"vendor-dir": "src/vendor/"
+	},
     "authors": [
         {
             "name": "jamesread",

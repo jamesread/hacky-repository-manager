@@ -9,6 +9,8 @@ VERSION=`buildid -k tag`
 
 DESTDIR=packages/hrm-$VERSION/
 
+composer update
+
 mkdir -p $DESTDIR
 
 cp -r src/ $DESTDIR/
