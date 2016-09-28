@@ -25,7 +25,7 @@ Hacky Repository Manager
 
 %install
 mkdir -p %{buildroot}/usr/share/hrm/
-cp src/*.php %{buildroot}/usr/share/hrm/
+cp src/* %{buildroot}/usr/share/hrm/
 
 mkdir -p %{buildroot}/etc/httpd/conf.d/
 cp var/hrm.conf %{buildroot}/etc/httpd/conf.d/hrm.conf
