@@ -1,6 +1,6 @@
 <?php
 
-set_include_path(get_include_path() . PATH_SEPARATOR . 'vendor/jwread/lib-allure/src/main/php/');
+set_include_path('vendor/jwread/lib-allure/src/main/php/' . PATH_SEPARATOR . get_include_path());
 
 require_once 'vendor/autoload.php';
 require_once 'includes/functions.php';

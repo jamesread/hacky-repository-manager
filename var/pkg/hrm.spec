@@ -39,3 +39,4 @@ cp var/schema.sql %{buildroot}/usr/share/doc/hrm/
 /usr/share/hrm/*
 /etc/httpd/conf.d/hrm.conf
 /etc/hrm/
+/usr/share/doc/hrm/*
