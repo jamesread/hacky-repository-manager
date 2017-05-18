@@ -38,6 +38,8 @@ node {
 	stage "Compile"
 	sh "./makePackage.sh"
 
+	archive 'packages/*.zip'
+
 	stash includes:"packages/*.zip", name: "binaries"
 }
 
