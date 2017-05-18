@@ -205,6 +205,7 @@ function updateRpmRepoYumConf($dir) {
 	$yumConf .= 'baseurl=' . $CFG_REPO_BASE . $name . "\n";
 
 	file_put_contents($dir . '' . $name . '.repo', $yumConf);
+	@symlink($dir . '' . $name, 'repo');
 }
 
 function updateRpmRepo($dir) {
@@ -212,7 +213,7 @@ function updateRpmRepo($dir) {
 
 	logger("updating RPM repo: $dir");
 	chdir($dir);
-	logger(exec("createrepo ."));
+	logger(exec("createrepo . --deltas "));
 
 	chdir($originalDir);
 
