@@ -12,7 +12,7 @@ URL:		http://github.com/jamesread/hacky-repository-manager
 Source0:	hrm.zip
 
 BuildRequires:	php
-Requires:	php httpd
+Requires:	php httpd createrepo
 
 %description
 Hacky Repository Manager
