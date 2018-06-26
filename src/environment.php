@@ -10,3 +10,9 @@ require_once 'includes/widgets/header.php';
 <p>CFG_REPO_BASE: <?php echo $CFG_REPO_BASE; ?></p>
 <p>CFG_REPO_ROOT: <?php echo $CFG_REPO_ROOT; ?></p>
 <p>SELinux, <?php echo `getsebool httpd_unified`; ?>
+
+<?php
+
+require_once 'includes/widgets/footer.php';
+
+?>

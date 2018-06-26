@@ -7,3 +7,5 @@ packages
 .buildid
 .hrm.rpmmacro
 src/vendor/
+**/*.swp
+**/*.swo

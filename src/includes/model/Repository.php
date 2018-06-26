@@ -9,7 +9,7 @@ class Repository {
 
 	public function fromDatabase($repo) {
 		global $CFG_REPO_ROOT;
-
+		
 		$this->name = $repo['name'];
 
 		$prefix = $repo['name'];

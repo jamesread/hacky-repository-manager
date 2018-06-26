@@ -17,5 +17,6 @@ require_once 'includes/common.php';
 	<a href = "environment.php">Environment</a>
 	<a href = "routing.php">Routing</a>
 	<a href = "createRepository.php">Create</a>
+	<a href = "help.php">Help</a>
 </nav>
 </header>

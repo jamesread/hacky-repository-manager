@@ -12,9 +12,9 @@ try {
 		$origin = $file['name'];
 
 		try {
-			$repo = database\getRepositoryByPackageFilename($origin);
+			$repo = getRepositoryByPackageFilename($origin);
 		} catch (Exception $e) {
-			$repo = database\getRepositoryByName('default');
+			$repo = getRepositoryByName('default');
 		}
 
 		$destin = $repo->getBaseDir() . $file['name'];
