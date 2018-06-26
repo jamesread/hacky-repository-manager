@@ -16,14 +16,14 @@ class FormCreateRepository extends libAllure\Form {
 
 		$dir = $CFG_REPO_ROOT . DIRECTORY_SEPARATOR . $this->getElementValue('name');
 
+		require_once 'includes/widgets/header.php';
 		logger("Trying to create: $dir");
 
-		mkdir($dir);
+		@mkdir($dir);
 
-		$sql = 'INSERT INTO repositories (name) VALUES (:name)';
-		$stmt = stmt($sql);
-		$stmt->bindValue(':name', $this->getElementValue('name'));
-		$stmt->execute();
+		database\createRepository($this->getElementValue('name'));
+		require_once 'includes/widgets/footer.php';
+
 	}
 }
 

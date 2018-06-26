@@ -9,14 +9,14 @@ class FormRouting extends \libAllure\Form {
 	public function __construct() {
 		parent::__construct('formRouting', 'Update Routing');
 
-		$routes = getSetting('routes');
+		$routes = database\getSetting('routes');
 
 		$this->addElement(new ElementTextbox('routes', 'Routes', $routes));
 		$this->addDefaultButtons();
 	}
 
 	public function process() {
-		setSetting('routes', $this->getElementValue('routes'));
+		database\setSetting('routes', $this->getElementValue('routes'));
 	}
 }
 
@@ -31,6 +31,8 @@ $tpl->display('routing.tpl');
 
 $tpl->assignForm($f);
 $tpl->display('form.tpl');
+
+$tpl->display('routingHelp.tpl');
 
 require_once 'includes/widgets/footer.php';
 

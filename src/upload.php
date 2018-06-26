@@ -12,11 +12,10 @@ try {
 		$origin = $file['name'];
 
 		try {
-			$repo = getRepositoryByPackageFilename($origin);
+			$repo = database\getRepositoryByPackageFilename($origin);
 		} catch (Exception $e) {
-			$repo = getRepositoryByName('default');
+			$repo = database\getRepositoryByName('default');
 		}
-
 
 		$destin = $repo->getBaseDir() . $file['name'];
 
@@ -28,7 +27,7 @@ try {
 			throw new Exception("Could not move uploaded file");
 		}
 
-		writePackageMetadata($file['name'], $repo);
+		database\writePackageMetadata($file['name'], $repo);
 
 		@unlink($repo->getBaseDir() . '/latest');
 		symlink($file['name'], $repo->getBaseDir() . '/latest');

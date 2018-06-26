@@ -2,130 +2,14 @@
 
 require_once 'libAllure/util/shortcuts.php';
 
-errorHandler()->beGreedy();
+require_once 'includes/model/Route.php';
+require_once 'includes/model/Repository.php';
 
-function writePackageMetadata($filename, $repo) {
-	$sql = 'INSERT INTO packages (filename, repo, uploaded) VALUES (:filename, :repo, now())';
-	$stmt = stmt($sql);
-	$stmt->bindValue(':filename', $filename);
-	$stmt->bindValue(':repo', $repo->getId());
-	$stmt->execute();
-	
-	logger("Wrote package metadata for $filename");
-}
+errorHandler()->beGreedy();
 
 function logger($message) {
 	error_log('hacky-repository-manager: ' . $message, 0);
 	echo $message . "\n";
-}
-
-class Repo {
-	private $name;
-	private $baseDir;
-	private $id;
-
-	public function __construct() {
-	}
-
-	public function fromDatabase($repo) {
-		global $CFG_REPO_ROOT;
-
-		$this->name = $repo['name'];
-
-		$prefix = $repo['name'];
-
-		$ret = $CFG_REPO_ROOT . $prefix;
-
-		if (!is_dir($ret)) {
-			logger("making dirs:" . $ret);
-
-			if (!mkdir($ret, 0777, true)) {
-				throw new Exception("could not make dirs" . $ret);
-			}
-		}
-
-		checkValidPath($ret);
-
-		$this->baseDir = $ret;
-		$this->id = $repo['id'];
-	}
-
-
-	public function getBaseDir() {
-		return $this->baseDir . '/';
-	}
-
-	public function getId() {
-		return $this->id;
-	}
-
-	public function getName() {
-		return $this->name;
-	}
-
-	public function delete() {
-		$this->rmdir($this->getBaseDir());
-
-		$sql = 'DELETE FROM repositories WHERE id = :id ';
-		$stmt = stmt($sql);
-		$stmt->bindValue(':id', $this->id);
-		$stmt->execute();
-	}
-
-	private function rmdir($dir) {
-		$results = array_diff(scandir($dir), array('.', '..'));
-
-		foreach ($results as $file) {
-			$path = $dir . DIRECTORY_SEPARATOR . $file;
-
-			if (is_dir($path)) {
-				$this->rmdir($path);
-			} else {
-				unlink($path);
-			}
-		}
-
-		return rmdir($dir);
-		
-	}
-}
-
-function getRepositoryByNameSoft($repoName) {
-	$sql = 'SELECT r.id, r.name FROM repositories r WHERE r.name = :name';
-	$stmt = stmt($sql);
-	$stmt->bindValue(':name', $repoName);
-	$stmt->execute();
-
-	if ($stmt->numRows() == 0) {
-		return null;
-	} else {
-		return $stmt->fetchRow();
-	}
-}
-
-function createRepository($name) {
-	$sql = 'INSERT INTO repositories (name) VALUES (:name) ';
-	$stmt = stmt($sql);
-	$stmt->bindValue(':name', $name);
-	$stmt->execute();
-}
-
-function getRepositoryByName($name) {
-	$repoFromDb = getRepositoryByNameSoft($name);
-
-	if ($repoFromDb == null) {
-		createRepository($name);
-		$repoFromDb = getRepositoryByNameSoft($name);
-	}
-
-	if ($repoFromDb == null) {
-		throw new Exception('Could not find repo by name: ' . $name);
-	} else {
-		$repo = new Repo();
-		$repo->fromDatabase($repoFromDb);
-
-		return $repo;
-	}
 }
 
 function ruleEval($source, $route) {
@@ -171,7 +55,7 @@ function getRepositoryByPackageFilename($filename) {
 
 		if (ruleEval($source, $route)) {
 			echo "Matched: $route->line\n";
-			return getRepositoryByName($route->destination);
+			return database\getRepositoryByName($route->destination);
 		} else {
 			echo 'Rule does not match: ' . $route->line . "\n";
 		}
@@ -233,35 +117,10 @@ function doPostActions($dir, $filename) {
 	}
 }
 
-function getSetting($key) {
-	$sql = 'SELECT s.value FROM settings s WHERE s.`key` = :key ';
-	$stmt = stmt($sql);
-	$stmt->bindValue(':key', $key);
-	$stmt->execute();
-
-	try {
-		$row = $stmt->fetchRow();
-		$value = $row['value'];
-
-		return $value;
-	} catch (Exception $e) {
-		return null; 
-	}
-}
-
-function setSetting($key, $value) {
-	$sql = 'INSERT INTO settings (`key`, `value`) VALUES (:key, :value1) ON DUPLICATE KEY UPDATE `value` = :value2';
-	$stmt = stmt($sql);
-	$stmt->bindValue(':key', $key);
-	$stmt->bindValue(':value1', $value);
-	$stmt->bindValue(':value2', $value);
-	$stmt->execute();
-}
-
 function getRoutes() {
 	$ret = array();
 
-	foreach (explode("\n", getSetting('routes')) as $routeLine) {
+	foreach (explode("\n", \database\getSetting('routes')) as $routeLine) {
 		$matches = null;
 		preg_match_all('/(?<type>[\w-_]+) ?(?<operator>[=~]) ?(?<source>[\w-_\.\|]+)[ ]*?->(?<destination>.+)/i', $routeLine, $matches, PREG_SET_ORDER);
 
@@ -292,13 +151,23 @@ function getRoutes() {
 	return $ret;
 }
 
-class Route {
-	public $type;
-	public $source;
-	public $operator;
-	public $destination;
-	public $parsed;
-	public $line;
+function getRepositoryByName($name) {
+	$repoFromDb = database\getRepositoryFromDatabase($name);
+
+	if ($repoFromDb == null) {
+		createRepository($name);
+		$repoFromDb = database\getRepositoryFromDatabase($name);
+	}
+
+	if ($repoFromDb == null) {
+		throw new Exception('Could not find repo by name: ' . $name);
+	} else {
+		$repo = new model\Repository();
+		$repo->fromDatabase($repoFromDb);
+
+		return $repo;
+	}
 }
+
 
 ?>

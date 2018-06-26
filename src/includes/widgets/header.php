@@ -11,7 +11,11 @@ require_once 'includes/common.php';
 <body>
 <header>
 <h1>Hacky Repository Manager</h1>
-<a href = "index.php">Repositories</a>
-<a href = "routing.php">Routing</a>
-<a href = "createRepository.php">Create</a>
+
+<nav>
+	<a href = "index.php">Repositories</a>
+	<a href = "environment.php">Environment</a>
+	<a href = "routing.php">Routing</a>
+	<a href = "createRepository.php">Create</a>
+</nav>
 </header>
