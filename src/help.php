@@ -12,7 +12,10 @@ $uploadUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . dirnam
 
 <h4>by using CURL</h4>
 
-<pre>curl -F 'file=@myfile.txt;filename=myfile.txt' "http://ci.teratan.net/hacky-repository-manager/src/upload.php"</pre>
+<pre>
+FILE=myfile.txt
+curl -F "file=@$FILE;filename=$FILE" "http://ci.teratan.net/hacky-repository-manager/src/upload.php"
+</pre>
 
 <?php
 
