@@ -55,7 +55,7 @@ function getRepositoryByPackageFilename($filename) {
 
 		if (ruleEval($source, $route)) {
 			echo "Matched: $route->line\n";
-			return database\getRepositoryByName($route->destination);
+			return getRepositoryByName($route->destination);
 		} else {
 			echo 'Rule does not match: ' . $route->line . "\n";
 		}
